@@ -39,7 +39,7 @@ install:
   
   # functions
   
-  -ps : function zip2nuget($file) {
+  - ps: function zip2nuget($file) {
           $tmp = 'C:\nutmp';
           $here = get-location;
           
