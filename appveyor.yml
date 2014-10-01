@@ -16,11 +16,11 @@ environment:
     - build_platform: "x64"
       build_compiler: "msvc"
     
-    #- build_platform: "x86"
-    #  build_compiler: "mingw"
+    - build_platform: "x86"
+      build_compiler: "mingw"
     
-    #- build_platform: "x64"
-    #  build_compiler: "mingw"
+    - build_platform: "x64"
+      build_compiler: "mingw"
 
 
 
@@ -115,7 +115,7 @@ build_script:
   - if [%build_compiler%]==[msvc] (
       %cmake_cmd% &&
       msbuild zlib.sln /p:Configuration=Release /v:m &&
-      7z a %zip% .\Release\zlib.dll .\Release\zlib.lib .\Release\zlibstatic.lib &&
+      7z a %zip% .\Release\zlib.dll .\Release\zlib.lib .\Release\zlibstatic.lib zconf.h zlib.h zutil.h &&
       appveyor PushArtifact %zip%
     )
   
@@ -125,8 +125,16 @@ build_script:
   - if [%build_compiler%]==[mingw] if [%build_platform%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
   - if [%build_compiler%]==[mingw] if [%build_platform%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
   
-  #- if [%build_compiler%]==[mingw] (
-  #    )
+  - SET zip=zlib-mingw-%build_platform%.zip
+  - SET cmake_cmd=cmake -G "MinGW Makefiles"
+  - if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_gcargs%
+  
+  - if [%build_compiler%]==[mingw] (
+      %cmake_cmd% &&
+      mingw32-make &&
+      7z a %zip% libz.a libz.dll.a libzlib.dll zconf.h zlib.h zutil.h &&
+      appveyor PushArtifact %zip%
+    )
 
 
 test_script:
