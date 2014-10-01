@@ -114,10 +114,8 @@ build_script:
   - if [%build_compiler%]==[msvc] (
       SET cmake_cmd=cmake -G "%cm_arg%" &&
       (if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_vcargs%) &&
-      
       %cmake_cmd% &&
       msbuild zlib.sln /p:Configuration=Release /v:m &&
-      
       SET zip=zlib-msvc12-%build_platform%.zip &&
       7z a %zip% .\Release\zlib.dll .\Release\zlib.lib .\Release\zlibstatic.lib &&
       appveyor PushArtifact %zip%
