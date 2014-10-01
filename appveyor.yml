@@ -135,7 +135,7 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) zip2nuget $env:zip
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip }
   
   
   
@@ -155,7 +155,7 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) zip2nuget $env:zip
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip }
 
 
 
