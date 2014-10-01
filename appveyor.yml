@@ -8,6 +8,7 @@ environment:
   static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   static_gcargs: -DCMAKE_SHARED_LINKER_FLAGS=-static
   
+  
   matrix:
     - build_platform: "x86"
       build_compiler: "msvc"
@@ -100,29 +101,29 @@ install:
   - for %%i in (sh.exe) do @del "%%~$PATH:i"
 
 
+
 build_script:
-  
-  # set env
-  
-  - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
-  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
-  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
-  
   
   # build msvc
   
+  - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
+  
+  - SET zip=zlib-msvc12-%build_platform%.zip
   - SET cmake_cmd=cmake -G "%vc_cm_arg%"
   - if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_vcargs%
+  
   - if [%build_compiler%]==[msvc] (
       %cmake_cmd% &&
       msbuild zlib.sln /p:Configuration=Release /v:m &&
-      SET zip=zlib-msvc12-%build_platform%.zip &&
       7z a %zip% .\Release\zlib.dll .\Release\zlib.lib .\Release\zlibstatic.lib &&
       appveyor PushArtifact %zip%
     )
   
   
   # build mingw
+  
+  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
+  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
   
   #- if [%build_compiler%]==[mingw] (
   #    )
