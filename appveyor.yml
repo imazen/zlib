@@ -50,7 +50,7 @@ install:
           iex "7z x -o$tmp $file";
           cd $tmp;
           iex "nuget spec $id";
-          (Get-Content "$id.nuspec") -join "`n" -replace "(?s)<releaseNotes>.*</dependencies>", '' | Out-File "$id.nuspec";
+          (Get-Content "$id.nuspec") -join "`n" -replace "(?s)<licenseUrl>.*</dependencies>", "<description>$id</description>" | Out-File "$id.nuspec";
           iex "nuget pack $id.nuspec -version $($env:APPVEYOR_BUILD_VERSION)";
           copy "*.nupkg" $here;
           cd $here;
@@ -136,7 +136,7 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "$($env:build_compiler)-$($env:build_platform)" }
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "zlib-$($env:build_compiler)-$($env:build_platform)" }
   
   
   
@@ -156,7 +156,7 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "$($env:build_compiler)-$($env:build_platform)" }
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "zlib-$($env:build_compiler)-$($env:build_platform)" }
 
 
 
