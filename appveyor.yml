@@ -39,6 +39,22 @@ install:
   
   # functions
   
+  - ps: function zip2nuget($file, $id) {
+          $tmp = 'C:\nutmp';
+          $here = get-location;
+          
+          if(Test-Path $tmp) {
+            Remove-Item $tmp -Force -Recurse;
+          }
+          
+          iex "7z x -o$tmp $file";
+          cd $tmp;
+          iex "nuget spec $id";
+          iex "nuget pack $($env:APPVEYOR_BUILD_VERSION)";
+          copy "*.nupkg" "$here\$file.nupkg";
+          cd $here;
+        }
+  
   - ps: function Print-File($txt) {
           Get-Content $txt | ForEach-Object {
             echo "$_"
@@ -119,6 +135,8 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "$($env:build_compiler)-$($env:build_platform)" }
+  
   
   
   # build mingw
@@ -136,6 +154,8 @@ build_script:
       7z a %zip% libzlibstatic.a libzlib.dll.a libzlib.dll zconf.h zlib.h zutil.h &&
       appveyor PushArtifact %zip%
     )
+  
+  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "$($env:build_compiler)-$($env:build_platform)" }
 
 
 
@@ -145,3 +165,7 @@ test_script:
   - ps: Push-Ctest-Results '.'
   - ps: Push-AppveyorArtifact Testing\Temporary\LastTest.log
   - exit %fail%
+
+
+on_success:
+  - ps: Push-AppveyorArtifact *.nupkg
