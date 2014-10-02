@@ -50,8 +50,8 @@ install:
           iex "7z x -o$tmp $file";
           cd $tmp;
           iex "nuget spec $id";
-          iex "nuget pack $($env:APPVEYOR_BUILD_VERSION)";
-          copy "*.nupkg" "$here\$file.nupkg";
+          iex "nuget pack $id.nuspec -version $($env:APPVEYOR_BUILD_VERSION)";
+          copy "*.nupkg" $here;
           cd $here;
         }
   
@@ -89,7 +89,7 @@ install:
           $xml = $head;
           $num = 0;
           
-          Select-String '(\w+)\s+(\d+)\s+([\d\.]{5})' -input (Get-Content $dir\Testing\Temporary\CTestCostData.txt)-AllMatches | % {$_.Matches} | % {
+          Select-String '(\w+)\s+(\d+)\s+([\d\.]{1,5})' -input (Get-Content $dir\Testing\Temporary\CTestCostData.txt)-AllMatches | % {$_.Matches} | % {
             $name = $prefix + $_.Groups[1].Value;
             $res = @{$true="Pass";$false="Fail"}[$_.Groups[2].Value -eq 1];
             $time = $_.Groups[3].Value;
