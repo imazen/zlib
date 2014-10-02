@@ -50,6 +50,7 @@ install:
           iex "7z x -o$tmp $file";
           cd $tmp;
           iex "nuget spec $id";
+          (Get-Content "$id.nuspec") -join "`n" -replace "(?s)<releaseNotes>.*</dependencies>", '' | Out-File "$id.nuspec"
           iex "nuget pack $id.nuspec -version $($env:APPVEYOR_BUILD_VERSION)";
           copy "*.nupkg" $here;
           cd $here;
