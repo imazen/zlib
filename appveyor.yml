@@ -5,8 +5,10 @@ environment:
   # settings
   static_runtime: 1
   
-  static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   static_gcargs: -DCMAKE_SHARED_LINKER_FLAGS=-static
+  static_vcargs:
+  #static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
+  # ^ don't.
   
   
   matrix:
