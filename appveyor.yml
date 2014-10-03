@@ -38,8 +38,8 @@ install:
   
   
   # get common functions
-  - curl -O http://libgd.blob.core.windows.net/scripts/appveyor_funcs.ps1
-  - ps: . .\appveyor_funcs.ps1
+  - git clone https://github.com/imazen/gd-appveyor-helpers
+  - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
   
   
   # get mingw-w64 (C:\mingw64)
