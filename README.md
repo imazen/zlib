@@ -1,3 +1,7 @@
+[![Master build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty/branch/master)](https://ci.appveyor.com/project/nathanaeljones/zlib/branch/master)
+[![Last build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty)](https://ci.appveyor.com/project/nathanaeljones/zlib)
+
+
 # Zlib
 
 Zlib is a compression tool from [http://zlib.net](http://zlib.net).
