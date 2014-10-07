@@ -43,7 +43,7 @@ install:
         elseif($env:build_platform -eq 'arm') {
           $env:vcvar_arg = 'x86_arm';
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
-          $env:cmake_extra = '-DCMAKE_ROOT=C:/cmakems/share/cmake-3.0';
+          $env:cmake_extra = '-DCMAKE_ROOT="C:/cmakems/share/cmake-3.0"';
         }
   
   
