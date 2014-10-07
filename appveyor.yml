@@ -10,6 +10,8 @@ environment:
   #static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   # ^ don't.
   
+  cmake_extra:
+  
   
   matrix:
     - build_platform: "x86"
@@ -41,6 +43,7 @@ install:
         elseif($env:build_platform -eq 'arm') {
           $env:vcvar_arg = 'x86_arm';
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
+          $env:cmake_extra = '-DCMAKE_ROOT=C:/cmakems/share/cmake-3.0';
         }
   
   
@@ -71,7 +74,7 @@ build_script:
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
   
   - SET zip=zlib-msvc12-%build_platform%.zip
-  - SET cmake_cmd=cmake -G "%vc_cm_arg%"
+  - SET cmake_cmd=cmake -G "%vc_cm_arg%" %cmake_extra%
   - if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_vcargs%
   
   - if [%build_compiler%]==[msvc] (
