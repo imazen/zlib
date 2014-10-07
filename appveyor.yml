@@ -18,6 +18,9 @@ environment:
     - build_platform: "x64"
       build_compiler: "msvc"
     
+    - build_platform: "arm"
+      build_compiler: "msvc"
+    
     - build_platform: "x86"
       build_compiler: "mingw"
     
@@ -31,9 +34,13 @@ install:
           $env:vcvar_arg = 'x86_amd64';
           $env:vc_cm_arg = 'Visual Studio 12 Win64';
         }
-        else {
+        elseif($env:build_platform -eq 'x86') {
           $env:vcvar_arg = 'x86';
           $env:vc_cm_arg = 'Visual Studio 12';
+        }
+        elseif($env:build_platform -eq 'arm') {
+          $env:vcvar_arg = 'x86_arm';
+          $env:vc_cm_arg = 'Visual Studio 12 ARM';
         }
   
   
@@ -41,6 +48,11 @@ install:
   - git clone https://github.com/imazen/gd-appveyor-helpers
   - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
   
+  # get cmakems (C:\cmakems)
+  - ps: if($env:build_compiler -eq 'msvc' -and $env:build_platform -eq 'arm') {
+      invoke 'curl' '-L -o cmakems.exe "http://libgd.blob.core.windows.net/cmakems/cmake-3.0.20140929-win32-x86.exe"';
+      iex 'cmakems.exe' '/S /D=C:\cmakems';
+      $env:path = "C:\cmakems;$($env:path)"; }
   
   # get mingw-w64 (C:\mingw64)
   - ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x64') {
