@@ -70,6 +70,9 @@ install:
 
 build_script:
   
+  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_BRANCH)";
+  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
+  
   # build msvc
   
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
@@ -85,8 +88,6 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_BRANCH)";
-  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
   - ps: if(Test-Path $env:zip) {
           zip2nuget $env:zip $nupkg_b;
           zip2nuget $env:zip $nupkg_c; }
@@ -112,7 +113,9 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "zlib-$($env:build_compiler)-$($env:build_platform)" }
+  - ps: if(Test-Path $env:zip) {
+          zip2nuget $env:zip $nupkg_b;
+          zip2nuget $env:zip $nupkg_c; }
 
 
 
@@ -125,4 +128,5 @@ test_script:
 
 
 on_success:
-  - ps: Push-AppveyorArtifact *.nupkg
+  - ps: Push-AppveyorArtifact $nupkg_b
+  - ps: Push-AppveyorArtifact $nupkg_c
