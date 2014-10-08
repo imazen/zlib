@@ -84,6 +84,9 @@ build_script:
   
   - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "zlib-$($env:build_compiler)-$($env:build_platform)" }
   
+  # disable arm tests
+  - if [%build_platform%]==[arm] del CTestTestfile.cmake
+  
   
   
   # build mingw
