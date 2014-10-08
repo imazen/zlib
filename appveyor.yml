@@ -54,7 +54,7 @@ install:
   # get cmakems (C:\cmakems)
   - ps: if($env:build_compiler -eq 'msvc' -and $env:build_platform -eq 'arm') {
       invoke 'curl' '-L -o cmakems.exe "http://libgd.blob.core.windows.net/cmakems/cmake-3.0.20140929-win32-x86.exe"';
-      iex 'cmakems.exe /S /D=C:\cmakems';
+      iex '.\cmakems.exe /S /D=C:\cmakems';
       Wait-Process cmakems;
       $env:path = "C:\cmakems\bin;$($env:path)"; }
   
