@@ -22,6 +22,11 @@ environment:
     
     - build_platform: "arm"
       build_compiler: "msvc"
+      build_system: "WindowsPhone"
+    
+    - build_platform: "arm"
+      build_compiler: "msvc"
+      build_system: "WindowsStore"
     
     - build_platform: "x86"
       build_compiler: "mingw"
@@ -43,7 +48,10 @@ install:
         elseif($env:build_platform -eq 'arm') {
           $env:vcvar_arg = 'x86_arm';
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
-          $env:cmake_extra = '-DCMAKE_SHARED_LINKER_FLAGS=/appcontainer';
+        }
+  
+  - ps: if($env:build_system -neq '') {
+          $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system)";
         }
   
   
