@@ -10,24 +10,22 @@ environment:
   #static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   # ^ don't.
   
-  cmake_extra:
-  
   
   matrix:
-    #- build_platform: "x86"
-    #  build_compiler: "msvc"
+    - build_platform: "x86"
+      build_compiler: "msvc"
     
-    #- build_platform: "x64"
-    #  build_compiler: "msvc"
+    - build_platform: "x64"
+      build_compiler: "msvc"
     
     - build_platform: "arm"
       build_compiler: "msvc"
     
-    #- build_platform: "x86"
-    #  build_compiler: "mingw"
+    - build_platform: "x86"
+      build_compiler: "mingw"
     
-    #- build_platform: "x64"
-    #  build_compiler: "mingw"
+    - build_platform: "x64"
+      build_compiler: "mingw"
 
 
 
@@ -43,7 +41,6 @@ install:
         elseif($env:build_platform -eq 'arm') {
           $env:vcvar_arg = 'x86_arm';
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
-          $env:cmake_extra = '';
         }
   
   
@@ -57,8 +54,6 @@ install:
       iex '.\cmakems.exe /S /D=C:\cmakems';
       Wait-Process cmakems;
       $env:path = "C:\cmakems\bin;$($env:path)"; }
-  
-  #- dir C:\cmakems\share\cmake-3.0
   
   # get mingw-w64 (C:\mingw64)
   - ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x64') {
