@@ -14,11 +14,25 @@ environment:
   
   
   matrix:
+    #- build_platform: "x86"
+    #  build_compiler: "msvc"
+    
+    #- build_platform: "x64"
+    #  build_compiler: "msvc"
+    
+    #- build_platform: "x86"
+    #  build_compiler: "mingw"
+    
+    #- build_platform: "x64"
+    #  build_compiler: "mingw"
+    
     - build_platform: "x86"
       build_compiler: "msvc"
+      build_system: "WindowsPhone"
     
-    - build_platform: "x64"
+    - build_platform: "x86"
       build_compiler: "msvc"
+      build_system: "WindowsStore"
     
     - build_platform: "arm"
       build_compiler: "msvc"
@@ -27,12 +41,6 @@ environment:
     - build_platform: "arm"
       build_compiler: "msvc"
       build_system: "WindowsStore"
-    
-    - build_platform: "x86"
-      build_compiler: "mingw"
-    
-    - build_platform: "x64"
-      build_compiler: "mingw"
 
 
 
