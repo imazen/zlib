@@ -16,33 +16,37 @@ environment:
   pkg_extra:
   
   matrix:
-    - build_platform: "x86"
-      build_compiler: "msvc"
+    #- build_platform: "x86"
+    #  build_compiler: "msvc"
     
-    - build_platform: "x64"
-      build_compiler: "msvc"
+    #- build_platform: "x64"
+    #  build_compiler: "msvc"
     
-    - build_platform: "x86"
-      build_compiler: "mingw"
+    #- build_platform: "x86"
+    #  build_compiler: "mingw"
     
-    - build_platform: "x64"
-      build_compiler: "mingw"
+    #- build_platform: "x64"
+    #  build_compiler: "mingw"
     
     - build_platform: "x86"
       build_compiler: "msvc"
       build_system: "WindowsPhone"
+      build_system_ver: "8.0"
     
     - build_platform: "x86"
       build_compiler: "msvc"
       build_system: "WindowsStore"
+      build_system_ver: "8.0"
     
     - build_platform: "arm"
       build_compiler: "msvc"
       build_system: "WindowsPhone"
+      build_system_ver: "8.0"
     
     - build_platform: "arm"
       build_compiler: "msvc"
       build_system: "WindowsStore"
+      build_system_ver: "8.0"
 
 
 
@@ -60,9 +64,13 @@ install:
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
         }
   
+  - ps: if($env:build_system_ver -eq '') {
+          $env:build_system_ver = '8.0';
+        }
+  
   - ps: if($env:build_system -ne '') {
-          $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system) -DCMAKE_SYSTEM_VERSION=8.0";
-          $env:pkg_extra = "-$($env:build_system)";
+          $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system) -DCMAKE_SYSTEM_VERSION=$($env:build_system_ver)";
+          $env:pkg_extra = "-$($env:build_system)-$($env:build_system_ver)";
         }
   
   
@@ -111,9 +119,6 @@ build_script:
           zip2nuget $env:zip $nupkg_b;
           zip2nuget $env:zip $nupkg_c; }
   
-  # disable arm tests
-  - if [%build_platform%]==[arm] del CTestTestfile.cmake
-  
   
   
   # build mingw
@@ -139,6 +144,13 @@ build_script:
 
 
 test_script:
+  # disable arm tests
+  - if [%build_platform%]==[arm] del CTestTestfile.cmake
+  
+  # disable ws tests
+  - if [%build_system%]==[WindowsStore] del CTestTestfile.cmake
+  
+  
   - SET fail=0
   - ctest -C Release || SET fail=1 & ver > nul
   - ps: Push-Ctest-Results '.'
