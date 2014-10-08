@@ -12,19 +12,21 @@ environment:
   #static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   # ^ don't.
   
+  # set to '' by default (used to mark WP/WS)
+  pkg_extra:
   
   matrix:
-    #- build_platform: "x86"
-    #  build_compiler: "msvc"
+    - build_platform: "x86"
+      build_compiler: "msvc"
     
-    #- build_platform: "x64"
-    #  build_compiler: "msvc"
+    - build_platform: "x64"
+      build_compiler: "msvc"
     
-    #- build_platform: "x86"
-    #  build_compiler: "mingw"
+    - build_platform: "x86"
+      build_compiler: "mingw"
     
-    #- build_platform: "x64"
-    #  build_compiler: "mingw"
+    - build_platform: "x64"
+      build_compiler: "mingw"
     
     - build_platform: "x86"
       build_compiler: "msvc"
@@ -60,7 +62,7 @@ install:
   
   - ps: if($env:build_system -ne '') {
           $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system) -DCMAKE_SYSTEM_VERSION=8.0";
-          $env:nupkg_extra = "-$($env:build_system)";
+          $env:pkg_extra = "-$($env:build_system)";
         }
   
   
@@ -87,14 +89,14 @@ install:
 
 build_script:
   
-  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:nupkg_extra)-$($env:APPVEYOR_REPO_BRANCH)";
-  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:nupkg_extra)-$($env:APPVEYOR_REPO_COMMIT)";
+  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:pkg_extra)-$($env:APPVEYOR_REPO_BRANCH)";
+  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:pkg_extra)-$($env:APPVEYOR_REPO_COMMIT)";
   
   # build msvc
   
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
   
-  - SET zip=zlib-msvc12-%build_platform%.zip
+  - SET zip=zlib-msvc12-%build_platform%%pkg_extra%.zip
   - SET cmake_cmd=cmake -G "%vc_cm_arg%" %cmake_extra%
   - if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_vcargs%
   
@@ -119,7 +121,7 @@ build_script:
   - if [%build_compiler%]==[mingw] if [%build_platform%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
   - if [%build_compiler%]==[mingw] if [%build_platform%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
   
-  - SET zip=zlib-mingw-%build_platform%.zip
+  - SET zip=zlib-mingw-%build_platform%%pkg_extra%.zip
   - SET cmake_cmd=cmake -G "MinGW Makefiles" %cmake_extra%
   - if [%static_runtime%]==[1] SET cmake_cmd=%cmake_cmd% %static_gcargs%
   
