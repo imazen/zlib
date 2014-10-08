@@ -43,7 +43,7 @@ install:
         elseif($env:build_platform -eq 'arm') {
           $env:vcvar_arg = 'x86_arm';
           $env:vc_cm_arg = 'Visual Studio 12 ARM';
-          $env:cmake_extra = '-DCMAKE_ROOT="C:\\cmakems\\share\\cmake-3.0"';
+          $env:cmake_extra = '';
         }
   
   
@@ -58,7 +58,7 @@ install:
       Wait-Process cmakems;
       $env:path = "C:\cmakems\bin;$($env:path)"; }
   
-  - dir C:\cmakems\share\cmake-3.0
+  #- dir C:\cmakems\share\cmake-3.0
   
   # get mingw-w64 (C:\mingw64)
   - ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x64') {
