@@ -52,6 +52,7 @@ install:
   
   - ps: if($env:build_system -neq '') {
           $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system) -DCMAKE_SYSTEM_VERSION=8.0";
+          $env:nupkg_extra = "-$($env:build_system)";
         }
   
   
@@ -78,8 +79,8 @@ install:
 
 build_script:
   
-  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_BRANCH)";
-  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
+  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:nupkg_extra)-$($env:APPVEYOR_REPO_BRANCH)";
+  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)$($env:nupkg_extra)-$($env:APPVEYOR_REPO_COMMIT)";
   
   # build msvc
   
