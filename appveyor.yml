@@ -51,7 +51,7 @@ install:
         }
   
   - ps: if($env:build_system -neq '') {
-          $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system)";
+          $env:cmake_extra = "-DCMAKE_SYSTEM_NAME=$($env:build_system) -DCMAKE_SYSTEM_VERSION=8.0";
         }
   
   
