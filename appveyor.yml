@@ -85,7 +85,11 @@ build_script:
       appveyor PushArtifact %zip%
     )
   
-  - ps: if(Test-Path $env:zip) { zip2nuget $env:zip "zlib-$($env:build_compiler)-$($env:build_platform)" }
+  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_BRANCH)";
+  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
+  - ps: if(Test-Path $env:zip) {
+          zip2nuget $env:zip $nupkg_b;
+          zip2nuget $env:zip $nupkg_c; }
   
   # disable arm tests
   - if [%build_platform%]==[arm] del CTestTestfile.cmake
