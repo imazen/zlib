@@ -24,3 +24,7 @@ Current master:
 Last build:
 
 [![Last build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty)](https://ci.appveyor.com/project/nathanaeljones/zlib)
+
+### Drone.io build
+
+[![Build Status](https://drone.io/github.com/imazen/zlib/status.png)](https://drone.io/github.com/imazen/zlib/latest)
