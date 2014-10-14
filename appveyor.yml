@@ -12,41 +12,41 @@ environment:
   #static_vcargs: -DCMAKE_C_FLAGS_RELEASE=/MT
   # ^ don't.
   
-  # set to '' by default (used to mark WP/WS)
+  # leave empty by default (used to mark WP/WS)
   pkg_extra:
   
   matrix:
-    #- build_platform: "x86"
-    #  build_compiler: "msvc"
-    
-    #- build_platform: "x64"
-    #  build_compiler: "msvc"
-    
-    #- build_platform: "x86"
-    #  build_compiler: "mingw"
-    
-    #- build_platform: "x64"
-    #  build_compiler: "mingw"
-    
     - build_platform: "x86"
       build_compiler: "msvc"
-      build_system: "WindowsPhone"
-      build_system_ver: "8.0"
+    
+    - build_platform: "x64"
+      build_compiler: "msvc"
     
     - build_platform: "x86"
-      build_compiler: "msvc"
-      build_system: "WindowsStore"
-      build_system_ver: "8.0"
+      build_compiler: "mingw"
     
-    - build_platform: "arm"
-      build_compiler: "msvc"
-      build_system: "WindowsPhone"
-      build_system_ver: "8.0"
+    - build_platform: "x64"
+      build_compiler: "mingw"
     
-    - build_platform: "arm"
-      build_compiler: "msvc"
-      build_system: "WindowsStore"
-      build_system_ver: "8.0"
+    #- build_platform: "x86"
+    #  build_compiler: "msvc"
+    #  build_system: "WindowsPhone"
+    #  build_system_ver: "8.0"
+    
+    #- build_platform: "x86"
+    #  build_compiler: "msvc"
+    #  build_system: "WindowsStore"
+    #  build_system_ver: "8.0"
+    
+    #- build_platform: "arm"
+    #  build_compiler: "msvc"
+    #  build_system: "WindowsPhone"
+    #  build_system_ver: "8.0"
+    
+    #- build_platform: "arm"
+    #  build_compiler: "msvc"
+    #  build_system: "WindowsStore"
+    #  build_system_ver: "8.0"
 
 
 
