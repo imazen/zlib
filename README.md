@@ -19,11 +19,11 @@ This will create 32 or 64 bit zlib_a.lib depending on target used. For the other
 ### Appveyor builds
 Current master:
 
-[![Master build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty/branch/master)](https://ci.appveyor.com/project/nathanaeljones/zlib/branch/master)
+[![Master build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty/branch/master)](https://ci.appveyor.com/project/imazen/zlib/branch/master)
 
 Last build:
 
-[![Last build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty)](https://ci.appveyor.com/project/nathanaeljones/zlib)
+[![Last build status](https://ci.appveyor.com/api/projects/status/uv1r1uitw6nrpgty)](https://ci.appveyor.com/project/imazen/zlib)
 
 ### Drone.io build
 
