@@ -12,7 +12,7 @@ tar -zcf out/libz-x64.tar.gz --transform 's/.\/build\///;s/.\///' $(./thumbs lis
 sudo apt-get -y update > /dev/null
 sudo apt-get -y install gcc-multilib > /dev/null
 
-export tbs_platform=x86
+export tbs_arch=x86
 ./thumbs make
 ./thumbs check
 objdump -f build/*.so | grep ^architecture
