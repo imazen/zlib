@@ -33,17 +33,27 @@ then
   echo " Usage : ./thumbs [command]"
   echo ""
   echo " Commands:"
-  echo "   make    - builds everything"
-  echo "   check   - runs any tests"
-  echo "   clean   - removes build files"
-  echo "   list    - echoes paths to any interesting files"
-  echo "             space separated; relative"
+  echo "   make      - builds everything"
+  echo "   check     - runs tests"
+  echo "   clean     - removes build files"
+  echo "   list      - echo paths to any interesting files"
+  echo "               space separated; relative"
+  echo "   list_bin  - echo binary paths"
+  echo "   list_inc  - echo lib include files"
+  echo "   list_slib - echo static lib path"
+  echo "   list_dlib - echo dynamic lib path"
+  echo ""
   exit
 fi
 
 # Local settings
 
-list="./zlib.h ./zutil.h ./build/zconf.h"
+l_inc="./zlib.h ./zutil.h ./build/zconf.h"
+l_slib=
+l_dlib=
+l_bin=
+list=
+
 make=
 cm_tools=
 cm_args=()
@@ -54,16 +64,25 @@ case "$tbs_tools" in
 msvc12)
   cm_tools="Visual Studio 12"
   make="msbuild.exe zlib.sln //p:Configuration=Release //v:m"
-  list="./build/Release/zlib.dll ./build/Release/zlib.lib ./build/Release/zlib_static.lib $list" ;;
+  l_slib="./build/Release/zlib_static.lib"
+  l_dlib="./build/Release/zlib.lib"
+  l_bin="./build/Release/zlib.dll"
+  list="$l_bin $l_slib $l_dlib $l_inc" ;;
 gnu)
   cm_tools="Unix Makefiles"
   cm_args+=(-fPIC)
   make=make
-  list="./build/libz.so.1.2.7.3 ./build/libz.a $list" ;;
+  l_slib="./build/libz.a"
+  l_dlib="./build/libz.so.1.2.7.3"
+  l_bin="$l_dlib"
+  list="$l_slib $l_dlib $l_inc" ;;
 mingw)
   cm_tools="MinGW Makefiles"
   make=mingw32-make
-  list="./build/libz.dll ./build/libz.dll.a ./build/libz.a $list" ;;
+  l_slib="./build/libz.a"
+  l_dlib="./build/libz.dll.a"
+  l_bin="./build/libz.dll"
+  list="$l_bin $l_slib $l_dlib $l_inc" ;;
 esac
 
 # -----------
@@ -102,6 +121,9 @@ check)
 clean)
   rm -rf build ;;
 
-list)
-  echo $list ;;
+list) echo $list ;;
+list_bin) echo $l_bin ;;
+list_inc) echo $l_inc ;;
+list_slib) echo $l_slib ;;
+list_dlib) echo $l_dlib ;;
 esac
