@@ -54,7 +54,7 @@ build_script:
   - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
   
   - SET tbs_settings=export tbs_tools=%build_compiler%;
-                     export tbs_platform=%build_platform%;
+                     export tbs_arch=%build_platform%;
                      export tbs_static_runtime=%static_runtime%
   
   - bash -c "%tbs_settings%; ./thumbs make"

@@ -6,7 +6,7 @@
 
 
 # Basic usage on *nix:
-# export tbs_platform=x86
+# export tbs_arch=x86
 # ./thumbs make
 
 # On Win (msvc):
@@ -15,13 +15,13 @@
 
 # On Win (mingw32):
 # SET path=C:\mingw32\bin;%path%
-# C:\path\to\bash -c "export tbs_tools=mingw; export tbs_platform=x86; ./thumbs make"
+# C:\path\to\bash -c "export tbs_tools=mingw; export tbs_arch=x86; ./thumbs make"
 
 
 # Global settings are stored in env vars
 # Should be inherited
 
-[ $tbs_platform ]       || export tbs_platform=x64
+[ $tbs_arch ]           || export tbs_arch=x64
 [ $tbs_tools ]          || export tbs_tools=gnu
 [ $tbs_static_runtime ] || export tbs_static_runtime=0
 
@@ -87,7 +87,7 @@ esac
 
 # -----------
 
-case "$tbs_platform" in
+case "$tbs_arch" in
 x64)
   [ $tbs_tools = msvc12 ] && cm_tools="$cm_tools Win64"
   [ $tbs_tools = gnu -o $tbs_tools = mingw ] && cm_args+=(-DCMAKE_C_FLAGS=-m64) ;;
