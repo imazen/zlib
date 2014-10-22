@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# THe Universal Make Bash Script
+# THe Ultimate Make Bash Script
 # Used to wrap build scripts for easy dep
 # handling and multiplatform support
 
