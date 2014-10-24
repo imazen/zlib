@@ -9,7 +9,7 @@
 # export tbs_arch=x86
 # ./thumbs make
 
-# On Win (msvc):
+# On Win (msvc 2013):
 # C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall x86_amd64
 # C:\path\to\bash -c "export tbs_tools=msvc12; ./thumbs make"
 
@@ -21,6 +21,7 @@
 # Global settings are stored in env vars
 # Should be inherited
 
+[ $tbs_conf ]           || export tbs_conf=Release
 [ $tbs_arch ]           || export tbs_arch=x64
 [ $tbs_tools ]          || export tbs_tools=gnu
 [ $tbs_static_runtime ] || export tbs_static_runtime=0
@@ -56,7 +57,7 @@ list=
 
 make=
 cm_tools=
-cm_args=()
+cm_args=(-DCMAKE_BUILD_TYPE=$tbs_conf)
 
 target=
 [ $2 ] && target=$2
@@ -67,7 +68,7 @@ case "$tbs_tools" in
 msvc12)
   cm_tools="Visual Studio 12"
   [ "$target" = "" ] && mstrg="zlib.sln" || mstrg="$target.vcxproj"
-  make="msbuild.exe $mstrg //p:Configuration=Release //v:m"
+  make="msbuild.exe $mstrg //p:Configuration=$tbs_conf //v:m"
   l_slib="./build/Release/zlib_static.lib"
   l_dlib="./build/Release/zlib.lib"
   l_bin="./build/Release/zlib.dll"
@@ -100,7 +101,6 @@ x64)
   [ $tbs_tools = gnu -o $tbs_tools = mingw ] && cm_args+=(-DCMAKE_C_FLAGS=-m64) ;;
 x86)
   [ $tbs_tools = gnu -o $tbs_tools = mingw ] && cm_args+=(-DCMAKE_C_FLAGS=-m32) ;;
-
 
 *) echo "Arch config not found for $tbs_arch"
    exit 1 ;;
