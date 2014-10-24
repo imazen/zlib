@@ -9,8 +9,8 @@ os:
   - osx
 
 before_install:
-  - '[ "$tbs_arch" = "x86" ] && sudo apt-get update -qq'
-  - '[ "$tbs_arch" = "x86" ] && sudo apt-get -y install gcc-multilib'
+  - '([ "$tbs_arch" = "x86" ] && sudo apt-get update -qq) || true'
+  - '([ "$tbs_arch" = "x86" ] && sudo apt-get -y install gcc-multilib) || true'
 
 script:
   - ./thumbs make
