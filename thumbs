@@ -83,6 +83,9 @@ mingw)
   l_dlib="./build/libz.dll.a"
   l_bin="./build/libz.dll"
   list="$l_bin $l_slib $l_dlib $l_inc" ;;
+
+*) echo "Tool config not found for $tbs_tools"
+   exit 1 ;;
 esac
 
 # -----------
@@ -93,6 +96,10 @@ x64)
   [ $tbs_tools = gnu -o $tbs_tools = mingw ] && cm_args+=(-DCMAKE_C_FLAGS=-m64) ;;
 x86)
   [ $tbs_tools = gnu -o $tbs_tools = mingw ] && cm_args+=(-DCMAKE_C_FLAGS=-m32) ;;
+
+
+*) echo "Arch config not found for $tbs_arch"
+   exit 1 ;;
 esac
 
 # -----------
@@ -126,4 +133,7 @@ list_bin) echo $l_bin ;;
 list_inc) echo $l_inc ;;
 list_slib) echo $l_slib ;;
 list_dlib) echo $l_dlib ;;
+
+*) echo "Unknown command $1"
+   exit 1 ;;
 esac
