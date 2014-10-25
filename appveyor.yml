@@ -5,28 +5,28 @@ shallow_clone: true
 
 environment:
   matrix:
-    - build_platform: "x86"
-      build_compiler: "msvc12"
-      static_runtime: 0
+    - tbs_arch: "x86"
+      tbs_tools: "msvc12"
+      tbs_static_runtime: 0
     
-    - build_platform: "x64"
-      build_compiler: "msvc12"
-      static_runtime: 0
+    - tbs_arch: "x64"
+      tbs_tools: "msvc12"
+      tbs_static_runtime: 0
     
-    - build_platform: "x86"
-      build_compiler: "mingw"
-      static_runtime: 1
+    - tbs_arch: "x86"
+      tbs_tools: "mingw"
+      tbs_static_runtime: 1
     
-    - build_platform: "x64"
-      build_compiler: "mingw"
-      static_runtime: 1
+    - tbs_arch: "x64"
+      tbs_tools: "mingw"
+      tbs_static_runtime: 1
 
 
 install:
-  - ps: if($env:build_platform -eq 'x64') {
+  - ps: if($env:tbs_arch -eq 'x64') {
           $env:vcvar_arg = 'x86_amd64';
         }
-        elseif($env:build_platform -eq 'x86') {
+        elseif($env:tbs_arch -eq 'x86') {
           $env:vcvar_arg = 'x86';
         }
   
@@ -35,7 +35,7 @@ install:
   - ps: . .\gd-appveyor-helpers\appveyor_funcs.ps1
   
   # get mingw-w64 (C:\mingw64)
-  - ps: if($env:build_compiler -eq 'mingw' -and $env:build_platform -eq 'x64') {
+  - ps: if($env:tbs_tools -eq 'mingw' -and $env:tbs_arch -eq 'x64') {
       invoke 'curl' '-L -o mw64.7z "http://libgd.blob.core.windows.net/mingw/x86_64-4.9.1-release-posix-seh-rt_v3-rev1.7z"';
       invoke '7z' 'x -oC:\ mw64.7z'; }
 
@@ -43,19 +43,16 @@ install:
 
 build_script:
   - '"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall" %vcvar_arg%'
-  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
-  - if [%build_compiler%]==[mingw] if [%build_platform%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
+  - if [%tbs_tools%]==[mingw] if [%tbs_arch%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
+  - if [%tbs_tools%]==[mingw] if [%tbs_arch%]==[x64] SET PATH=C:\mingw64\bin;%PATH%
   
-  - SET zip=zlib-%build_compiler%-%build_platform%.zip
-  - ps: $nupkg_b = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_BRANCH)";
-  - ps: $nupkg_c = "zlib-$($env:build_compiler)-$($env:build_platform)-$($env:APPVEYOR_REPO_COMMIT)";
+  - SET zip=zlib-%tbs_tools%-%tbs_arch%.zip
+  - ps: $nupkg_b = "zlib-$($env:tbs_tools)-$($env:tbs_arch)-$($env:APPVEYOR_REPO_BRANCH)";
+  - ps: $nupkg_c = "zlib-$($env:tbs_tools)-$($env:tbs_arch)-$($env:APPVEYOR_REPO_COMMIT)";
   
-  - SET tbs_settings=export tbs_tools=%build_compiler%;
-                     export tbs_arch=%build_platform%;
-                     export tbs_static_runtime=%static_runtime%
-  
-  - bash -c "%tbs_settings%; ./thumbs make"
-  - bash -c "%tbs_settings%; f=$(./thumbs list); 7z a %zip% $f"
+  - thumbs make
+  - for /f "tokens=*" %%i in ('thumbs list') do set files=%%i
+  - 7z a %zip% %files%
   - appveyor PushArtifact %zip%
   
   - ps: if(Test-Path $env:zip) {
@@ -66,7 +63,7 @@ build_script:
 
 test_script:
   - SET fail=0
-  - bash -c "%tbs_settings%; ./thumbs check" || SET fail=1 & ver > nul
+  - thumbs check || SET fail=1 & ver > nul
   - ps: Push-Ctest-Results 'build'
   - ps: Push-AppveyorArtifact build\Testing\Temporary\LastTest.log
   - exit %fail%

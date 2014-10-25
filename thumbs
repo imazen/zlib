@@ -9,13 +9,17 @@
 # export tbs_arch=x86
 # ./thumbs make
 
+
 # On Win (msvc 2013):
 # C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall x86_amd64
-# C:\path\to\bash -c "export tbs_tools=msvc12; ./thumbs make"
+# SET tbs_tools=msvc12
+# thumbs make
 
 # On Win (mingw32):
 # SET path=C:\mingw32\bin;%path%
-# C:\path\to\bash -c "export tbs_tools=mingw; export tbs_arch=x86; ./thumbs make"
+# SET tbs_tools=mingw
+# SET tbs_arch=x86
+# thumbs make
 
 
 # Global settings are stored in env vars
