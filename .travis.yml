@@ -6,7 +6,7 @@ env:
 
 os:
   - linux
-  - osx
+#  - osx
 
 before_install:
   - '([ "$tbs_arch" = "x86" ] && sudo apt-get update -qq) || true'
