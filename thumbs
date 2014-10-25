@@ -81,9 +81,9 @@ msvc12)
   cm_tools="Visual Studio 12"
   [ "$target" = "" ] && mstrg="zlib.sln" || mstrg="$target.vcxproj"
   make="msbuild.exe $mstrg //p:Configuration=$tbs_conf //v:m"
-  l_slib="./build/Release/zlib_static.lib"
-  l_dlib="./build/Release/zlib.lib"
-  l_bin="./build/Release/zlib.dll"
+  l_slib="./build/$tbs_conf/zlib_static.lib"
+  l_dlib="./build/$tbs_conf/zlib.lib"
+  l_bin="./build/$tbs_conf/zlib.dll"
   list="$l_bin $l_slib $l_dlib $l_inc" ;;
 gnu)
   cm_tools="Unix Makefiles"
