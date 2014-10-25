@@ -78,15 +78,16 @@ target=
 
 case "$tbs_tools" in
 msvc12)
+  # d suffix for debug builds
+  csx=
+  [ "$tbs_conf" = "Debug" ] && csx=d
+  
   cm_tools="Visual Studio 12"
   [ "$target" = "" ] && mstrg="zlib.sln" || mstrg="$target.vcxproj"
   make="msbuild.exe $mstrg //p:Configuration=$tbs_conf //v:m"
-  [ $tbs_conf=Release ] && l_slib="./build/$tbs_conf/zlib_static.lib"
-  [ $tbs_conf=Debug ] && l_slib="./build/$tbs_conf/zlib_staticd.lib"
-  [ $tbs_conf=Release ] && l_dlib="./build/$tbs_conf/zlib.lib"
-  [ $tbs_conf=Debug ] && l_dlib="./build/$tbs_conf/zlibd.lib"
-  [ $tbs_conf=Release ] && l_bin="./build/$tbs_conf/zlib.dll"
-  [ $tbs_conf=Debug ] && l_bin="./build/$tbs_conf/zlibd.dll"
+  l_slib="./build/$tbs_conf/zlib_static$csx.lib"
+  l_dlib="./build/$tbs_conf/zlib$csx.lib"
+  l_bin="./build/$tbs_conf/zlib$csx.dll"
   list="$l_bin $l_slib $l_dlib $l_inc" ;;
 gnu)
   cm_tools="Unix Makefiles"
