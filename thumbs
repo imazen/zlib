@@ -84,6 +84,8 @@ gnu)
 mingw)
   cm_tools="MinGW Makefiles"
   make="mingw32-make $target"
+  # allow sh in path; some old cmake/mingw bug?
+  cm_args+=(-DCMAKE_SH=)
   l_slib="./build/libz.a"
   l_dlib="./build/libz.dll.a"
   l_bin="./build/libz.dll"
